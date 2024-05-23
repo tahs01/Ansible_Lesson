@@ -1,0 +1,35 @@
+- name: Deploy Docker Applications
+  hosts: localhost
+  become: yes
+  vars_files:
+  - vault.yml
+  tasks:
+  # - name: Log in to Docker Hub
+  #   docker_login:
+  #     username: "{{ docker_hub_username }}"
+  #     password: "{{ docker_hub_password }}"
+
+  - name: Pull nginx image from Docker Hub
+    docker_image:
+      name: nginx
+      tag: 1.25.5
+      source: pull
+      state: present
+
+  - name: Run nginx container
+    docker_container:
+      name: my-nginx-app
+      image: nginx:1.25.5
+      ports:
+      - "1112:80"
+
+  - name: Pull mongo image from Docker Hub
+    docker_image:
+      name: mongo
+      source: pull
+      state: present
+
+  - name: Run mongo container
+    docker_container:
+      name: my-mongo-app
+      image: mongo

@@ -1,0 +1,14 @@
+- hosts: localhost
+  become: yes
+
+  tasks:
+  - name: Pull the latest nginx image
+    command: sudo docker pull nginx:latest
+
+  - name: Run the nginx container
+    command: sudo docker run -d --name nginx -p 3333:80 nginx:latest
+
+  - name: Pull the latest nginx image and run the container
+    shell: |
+      sudo docker pull mongo:latest
+      sudo docker run -d --name mongo -p 4444:27017 mongo:latest

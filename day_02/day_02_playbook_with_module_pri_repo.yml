@@ -1,0 +1,25 @@
+- name: Deploy Docker Application
+  hosts: localhost
+  become: true
+  vars_files:
+  - vault.yml
+  tasks:
+  - name: Login DockerHub
+    docker_login:
+      username: "{{ docker_hub_username }}"
+      password: "{{ docker_hub_password }}"
+
+
+  - name: Pull Docker image from Docker Hub
+    docker_image:
+      name: tahs01/nextjs-frontend
+      tag: latest
+      source: pull
+      state: present
+
+  - name: Run Docker container
+    docker_container:
+      name: my-nextjs-app
+      image: tahs01/nextjs-frontend:latest
+      ports:
+      - "2222:80"
